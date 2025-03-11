@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', path='/css/style.css') }}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Clima</title>
+    <script>
+        const imagePaths = {
+            preview: "{{ url_for('static', path='images/Preview.png') }}",
+            rainy: "{{ url_for('static', path='images/Rainy.png') }}",
+            cloudy: "{{ url_for('static', path='images/Cloudy.png') }}",
+            sunny: "{{ url_for('static', path='images/Sunny.png') }}",
+            snowy: "{{ url_for('static', path='images/Snowy.png') }}"
+        };
+    </script>
+</head>
+<body>
+    <header>
+        <img src="{{ url_for('static', path='images/logo.png') }}" alt="Logo">
+        <h1>Catmate</h1>
+    </header>
+    <main>
+        <form id="weatherForm" class="formulario" method="POST" action="/predict">
+            <h3>Datos</h3>
+            <div class="select-container">
+                <div class="input_election">
+                    <select name="season" id="season" required>
+                        <option value="" disabled selected hidden>Estación</option>
+                        <option value="0">Invierno</option>
+                        <option value="1">Primavera</option>
+                        <option value="2">Verano</option>
+                        <option value="3">Otoño</option>
+                    </select>
+                    <i class='bx bx-sun'></i>
+                </div>
+                <div class="input_election">
+                    <select name="location" id="location" required>
+                        <option value="" disabled selected hidden>Terreno</option>
+                        <option value="0">Llano</option>
+                        <option value="1">Montañoso</option>
+                        <option value="2">Costero</option>
+                    </select>
+                    <i class='bx bxl-mongodb'></i>
+                </div>
+                <div class="input_election">
+                    <select name="cloud_cover" id="cloud_cover" required>
+                        <option value="" disabled selected hidden>Nubosidad</option>
+                        <option value="1">Despejada</option>
+                        <option value="0">Baja</option>
+                        <option value="3">Media</option>
+                        <option value="2">Alta</option>
+                    </select>
+                    <i class='bx bx-cloud'></i>
+                </div>
+            </div>
+            <div class="input-number">
+                <input type="number" name="temp" placeholder="Temperatura" min="-99" max="99" step="0.01" required>
+                <i class='bx bxs-thermometer'></i>
+            </div>
+            <div class="input-number">
+                <input type="number" name="humidity_porcent" placeholder="Humedad" min="0" max="120" step="0.01" required>
+                <i class='bx bx-droplet'></i>
+            </div>
+            <div class="input-number">
+                <input type="number" name="wind_speed" placeholder="V.Viento" min="0" max="400" step="0.01" required>
+                <i class='bx bx-wind'></i>
+            </div>
+            <div class="input-number">
+                <input type="number" name="precipitation" placeholder="Precipitación" min="0" max="100" step="0.01" required>
+                <i class='bx bx-cloud-snow'></i>
+            </div>
+            <div class="input-number">
+                <input type="number" name="pressure" placeholder="P.Atmosferica" min="0" max="2000" step="0.01" required>
+                <i class='bx bx-stopwatch'></i>
+            </div>
+            <div class="input-number">
+                <input type="number" name="uv" placeholder="Rayos UV" min="0" max="20" step="0.01" required>
+                <i class='bx bx-sun'></i>
+            </div>
+            <div class="input-number">
+                <input type="number" name="visibility" placeholder="Visibilidad" step="0.01" required>
+                <i class='bx bx-low-vision'></i>
+            </div>
+            <div class="button-container">
+                <button type="submit">Predecir</button>
+                <button type="button" id="clearButton">Limpiar</button>
+            </div>
+        </form>
+
+
+        <section class="resultados">
+            <div>
+                <h3>¿Deseas saber el clima?</h3>
+            </div>
+            <img src="{{ url_for('static', path='images/Preview.png') }}" alt="Gato clima">
+            <p>Ingresa los datos solicitados y presiona el botón <strong>"Predecir"</strong></p>
+        </section>
+    </main>
+
+    <script src="{{ url_for('static', path='/Js/scrips.js') }}"></script>
+    
+</body>
+</html>
