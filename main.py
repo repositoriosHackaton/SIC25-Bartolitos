@@ -8,7 +8,9 @@ import joblib
 from tensorflow.keras.models import load_model
 from PIL import Image
 import io
+import os
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 app = FastAPI()
 
 # Montar la carpeta de archivos estáticos
