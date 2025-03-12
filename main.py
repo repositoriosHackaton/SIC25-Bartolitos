@@ -10,9 +10,9 @@ from PIL import Image
 import io
 import os
 
-os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
-app = FastAPI()
 
+app = FastAPI()
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 # Montar la carpeta de archivos estáticos
 app.mount("/static", StaticFiles(directory="./public/static"), name="static")
 
