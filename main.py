@@ -23,6 +23,7 @@ templates = Jinja2Templates(directory="./public/template")
 model = joblib.load("./public/modelo/O-IIA_OIIA.pkl")
 scaler = joblib.load("./public/modelo/scaler.pkl")
 image_model = load_model("./public/modelo_img/mejor_modelo_clima_v2.h5")
+image_model.compile(optimizer="adam", loss="sparse_categorical_crossentropy", metrics=["accuracy"])
 
 #cargar el main hud
 @app.get("/", response_class=HTMLResponse)
