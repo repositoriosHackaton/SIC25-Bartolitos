@@ -15,9 +15,6 @@ app = FastAPI()
 
 os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 
-port = int(os.environ.get("PORT", 8000))
-uvicorn.run(app, host="0.0.0.0", port=port)
-
 # Montar la carpeta de archivos estáticos
 app.mount("/static", StaticFiles(directory="./public/static"), name="static")
 
