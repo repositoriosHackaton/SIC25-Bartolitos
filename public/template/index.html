@@ -20,10 +20,18 @@
     <header>
         <img src="{{ url_for('static', path='images/logo.png') }}" alt="Logo">
         <h1>Catmate</h1>
+        <div class="form-toggle-buttons">
+            <button class="toggle-button active" data-form="weatherForm">
+                <i class='bx bx-data'></i> Manual
+            </button>
+            <button class="toggle-button" data-form="imageForm">
+                <i class='bx bx-image'></i> Imagen
+            </button>
+        </div>
     </header>
     <main>
-        <form id="weatherForm" class="formulario" method="POST" action="/predict">
-            <h3>Datos</h3>
+        <form id="weatherForm" class="formulario active" method="POST" action="/predict">
+            <h3>Datos Meteorológicos</h3>
             <div class="select-container">
                 <div class="input_election">
                     <select name="season" id="season" required>
@@ -89,6 +97,19 @@
             </div>
         </form>
 
+        <form id="imageForm" class="formulario" method="POST" action="/predict_image" enctype="multipart/form-data">
+            <h3>Predicción por Imagen</h3>
+            <div class="image-upload-container">
+                <div class="preview-container">
+                    <img id="uploadPreview" src="{{ url_for('static', path='images/Preview.png') }}" alt="Vista previa">
+                </div>
+                <div class="upload-controls">
+                    <input type="file" id="imageInput" name="image" accept="image/*" required>
+                    <button type="button" class="clear-image">Limpiar</button>
+                    <button type="submit" class="submit-button">Predecir</button>
+                </div>
+            </div>
+        </form>
 
         <section class="resultados">
             <div>
@@ -98,8 +119,6 @@
             <p>Ingresa los datos solicitados y presiona el botón <strong>"Predecir"</strong></p>
         </section>
     </main>
-
     <script src="{{ url_for('static', path='/Js/scrips.js') }}"></script>
-    
 </body>
 </html>

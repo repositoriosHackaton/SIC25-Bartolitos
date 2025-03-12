@@ -1,10 +1,13 @@
-from fastapi import FastAPI, Form, Request
+from fastapi import FastAPI, Form, Request, File, UploadFile
 from fastapi.responses import JSONResponse, HTMLResponse
 from fastapi.templating import Jinja2Templates
-from fastapi.staticfiles import StaticFiles  # Importar StaticFiles
+from fastapi.staticfiles import StaticFiles
 import numpy as np
 import pandas as pd
 import joblib
+from tensorflow.keras.models import load_model
+from PIL import Image
+import io
 
 app = FastAPI()
 
@@ -14,14 +17,17 @@ app.mount("/static", StaticFiles(directory="./public/static"), name="static")
 # Configurar Jinja2 para las plantillas HTML
 templates = Jinja2Templates(directory="./public/template")
 
-# Cargar el modelo y el scaler
+# Cargar los modelos
 model = joblib.load("./public/modelo/O-IIA_OIIA.pkl")
 scaler = joblib.load("./public/modelo/scaler.pkl")
+image_model = load_model("./public/modelo_img/mejor_modelo_clima_v2.h5")
 
+#cargar el main hud
 @app.get("/", response_class=HTMLResponse)
 async def read_root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request, "result": -1})
 
+#predecccion mediante formulario
 @app.post("/predict")
 async def predict(
     season: int = Form(...),
@@ -72,5 +78,25 @@ async def predict(
     # Convertir el resultado de int64 a int
     result = int(prediccion[0])
 
+    # Devolver una respuesta JSON con el resultado
+    return JSONResponse(content={"result": result})
+
+#prediccion mediante imagen
+@app.post("/predict_image")
+async def predict_image(image: UploadFile = File(...)):
+    # Leer la imagen
+    contents = await image.read()
+    img = Image.open(io.BytesIO(contents))
+    
+    # Preprocesar la imagen
+    img = img.resize((224, 224))  # Ajustar al tamaño que espera el modelo
+    img_array = np.array(img)
+    img_array = img_array / 255.0  # Normalizar
+    img_array = np.expand_dims(img_array, axis=0)  # Agregar dimensión de batch
+    
+    # Hacer la predicción
+    prediccion = image_model.predict(img_array)
+    result = int(np.argmax(prediccion[0]))
+    
     # Devolver una respuesta JSON con el resultado
     return JSONResponse(content={"result": result})
